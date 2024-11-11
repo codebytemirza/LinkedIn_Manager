@@ -2,7 +2,6 @@ import os
 from typing import Optional, Dict, Any, List
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
-from google.colab import userdata
 from datetime import datetime
 import json
 from linkedin_api import create_post, LinkedInError
@@ -273,38 +272,3 @@ class SEOLinkedInPoster:
                         error_data["content"] = formatted_content
                     self.save_post_record({"date": datetime.now().isoformat(), "error": error_data})
                     return error_data
-
-def main():
-    try:
-        # Get API keys
-        GROQ_API_KEY = userdata.get('GROQ_API_KEY')
-        LINKEDIN_TOKEN = userdata.get('LINKEDIN_ACCESS_TOKEN')
-        
-        if not GROQ_API_KEY or not LINKEDIN_TOKEN:
-            raise ValueError("Missing required API keys in Colab Secrets")
-        
-        # Initialize poster
-        poster = SEOLinkedInPoster(
-            groq_api_key=GROQ_API_KEY,
-            linkedin_access_token=LINKEDIN_TOKEN
-        )
-        
-        # Create and publish post
-        print("Creating SEO-optimized LinkedIn post...")
-        result = poster.create_seo_post()
-        
-        if result["success"]:
-            print(f"\n✅ Post published successfully!")
-            print(f"Post ID: {result['post_id']}")
-        else:
-            print(f"\n❌ Publishing failed:")
-            print(f"Error type: {result.get('error_type', 'Unknown')}")
-            print(f"Error message: {result.get('error', 'No error message available')}")
-            
-    except Exception as e:
-        print(f"\n❌ Critical error:")
-        print(f"Type: {e.__class__.__name__}")
-        print(f"Message: {str(e)}")
-
-if __name__ == "__main__":
-    main()
