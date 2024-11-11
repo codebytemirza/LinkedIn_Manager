@@ -44,16 +44,11 @@ scheduler.add_job(
     minute=0
 )
 
+# Start the scheduler when the app is created
+scheduler.start()
+logger.info("Started background scheduler")
+
 # Basic health check endpoint required by Render
 @app.route('/')
 def health_check():
     return 'Server is running', 200
-
-if __name__ == '__main__':
-    # Start the scheduler
-    scheduler.start()
-    logger.info("Started background scheduler")
-    
-    # Run the server
-    port = int(os.getenv('PORT', 5000))
-    app.run(host='0.0.0.0', port=port)

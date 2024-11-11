@@ -3,3 +3,4 @@ python-dotenv
 APScheduler
 langchain-groq
 langchain
+gunicorn
